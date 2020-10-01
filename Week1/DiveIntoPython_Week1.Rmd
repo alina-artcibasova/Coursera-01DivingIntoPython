@@ -1,0 +1,468 @@
+---
+title: "Dive into Python Week 1"
+author: "darthaline"
+date: "14 Aug 2020"
+output:
+  html_notebook:
+    toc: true
+---
+
+# Week 1
+
+```{r}
+library(reticulate)
+#install_miniconda()
+```
+
+## Numeric examples
+
+Checking variable type
+```{python examples_numeric01}
+#defining variable's type
+num = 10
+type(num)
+```
+```{python examples_numeric02}
+#defining complex number
+complex_num = 14 + 1j
+complex_num
+type(complex_num)
+```
+
+Arifmetic operations
+```{python examples_numeric03}
+# multiplication
+2 * 3
+
+# degree of exponentiation
+2 ** 3
+
+#division
+5 / 2
+
+#div operator
+5 // 2
+
+#mod operator
+5 % 2
+```
+
+Exception
+```{python examples_numeric04}
+#lecture question
+#100 / (100 % 1)
+#ZeroDivisionError: division by zero
+#
+#Detailed traceback: 
+#  File "<string>", line 1, in <module>
+```
+
+Calculating hypothenuse
+```{python examples_numeric05}
+# pythagorean
+x1, y1 = 0, 0
+x2, y2 = 3, 4
+
+((x1-x2)**2 + (y1-y2)**2)**.5
+```
+
+Swapping 2 variables easily
+```{python examples_numeric06}
+#swap
+a, b = 10, 30
+a, b = b, a
+a, b
+```
+
+Numeric types are mutable, but lists aren't
+```{python examples_numeric07}
+# there are mutable and immutable types like
+x = y = 0
+x += 1
+x, y
+
+# but
+x = y = []
+x.append(1)
+x.append(2)
+x, y
+
+```
+
+## Boolean examples
+
+Comparison operations
+```{python boolean_examples01}
+# equal
+2 == 2
+
+# not equal
+2 != 8
+
+# multiple comparisons
+x = 2
+1 < x < 3
+```
+Logical AND, OR and NOT
+```{python boolean_examples02}
+# logical and
+x, y = True, False
+x and y
+# logical or
+x or y
+# logical not
+not y
+```
+
+Logical multiplication
+```{python boolean_examples03}
+# logical multiplication: first valid
+x = 12
+y = False
+x or y
+# logical multiplication: last valid
+x = 12
+y = "boom"
+x and y
+```
+
+Using library
+```{python boolean_examples04}
+#importing library
+import calendar
+calendar.isleap(1980)
+```
+
+## String examples
+
+String definitions:
+```{python string_examples01}
+
+# protecting double quotes within the string
+string_example = "\"Python\" course on \"Coursera\""
+string_example
+
+# raw strings
+string_example = "File on disc c:\\\\"
+string_example
+
+string_example = r"File on disc c:\\"
+string_example
+
+# breaking string apart
+string_example = "example example " \
+                 "more example"
+string_example
+```
+
+String addition, multiplication
+```{python string_examples02}
+# combining strings
+"one " + "two"
+"multiply! " * 3
+
+```
+
+Substrings
+```{python string_examples03}
+# substrings
+string_example[9:]
+string_example[9:15]
+string_example[-8:]
+
+# step
+string_example = "0123456789"
+string_example[::2]
+string_example[::-1]
+
+# string methods
+string_example.isdigit()
+string_example = "moscow"
+string_example.count('o')
+string_example.capitalize()
+
+# logical substring
+"3.14" in "3.141593"
+```
+
+Loops
+```{python string_examples04}
+# looping through strings
+for letter in string_example:
+    print(letter)
+```
+
+Type conversion
+```{python string_examples05}
+# type conversion
+str(3.14)
+bool("smth")
+bool("") #nothing
+```
+
+Strings formatting
+```{python string_examples06}
+# formatting strings
+template1 = "%s text text (%s), %d"
+template1 % ("insert1", "insert2", 2020)
+
+# string method formatting
+"{} text text ({}), {}".format("insert1", "insert2", 2021)
+"{example} text text ({author}), {year}".format(example = "insert1",
+                                                author = "insert2",
+                                                year = 2022)
+                                                
+# f-strings
+example = "insert1",
+author = "insert2",
+year = 2023
+
+f"{example} text text ({author}), {year}"
+
+# formatting modifiers
+num  = 8
+f"Binary: {num:#b}"
+num  = 2/3
+f"Round: {num:.3f}"
+```
+
+User input
+```{python string_examples07}
+# user input
+name = input("Enter your name: ")
+f"Hello, {name}!"
+
+```
+
+Byte strings
+```{python byte_strings}
+example_bytes = b"Hello"
+example_bytes
+type(example_bytes)
+
+for element in example_bytes:
+    print(element)
+    
+# example_bytes = b"привет" won't work because unicode
+example_string = "привет"
+encoded_string = example_string.encode(encoding = "utf-8")
+print(encoded_string)
+type(encoded_string)
+decoded_string = encoded_string.decode()
+print(decoded_string)
+```
+
+## Object None
+
+```{python none_example}
+answer = None
+answer
+type(answer)
+if not answer:
+    print("No answer obtained")
+
+income = None
+if income is None:
+    print("Sales haven't started")
+elif not income:
+    print("Nothing earned")
+
+```
+
+## Flow controllers
+
+if-elif-else
+```{python flow_controllers01}
+income = 5
+if income is None:
+    print("Sales haven't started")
+elif not income:
+    print("Nothing earned")
+else:
+    print(income)
+```
+
+Ternary operator
+```{python flow_controllers02}
+# ternary operator
+score_1 = 5
+score_2 = 0
+winner = "Argentina" if score_1 >  score_2 else "Jamaica"
+print(winner)
+```
+
+While loop
+```{python flow_controllers03}
+# while
+i = 3
+while i >= 0:
+  i -= 1
+  print(i)
+```
+
+For loop
+```{python flow_controllers04}
+# for
+name = "darth"
+for letters in name:
+    print(letters)
+    
+for i in range(3):
+    print(i)
+   
+result = 0 
+for i in range(101):
+    result += i
+print(result)
+
+for i in range(5, 8):
+    print(i)
+    
+for i in range(1, 10, 2):
+    print(i)
+
+for i in range(10, 5, -1):
+    print(i)
+```
+
+Pass does nothing - filler operator
+```{python flow_controllers05}
+for i in range(10, 5, -1):
+    pass
+```
+
+Break leaves the cycle
+```{python flow_controllers06}
+for i in range(101):
+    if i == 50:
+        break
+```
+
+continue goes to the next iteration in the cycle (pass just does nothing)
+```{python flow_controllers07}
+#continue goes to the next iteration in the cycle, pass just does nothing
+for i in range(3):
+    if i<3:
+        pass
+    print("pass")
+
+for i in range(3):
+    if i<3:
+        continue
+    print("continue")
+```
+
+
+## Flow control game example
+```{python numberGuessingGame, eval=FALSE}
+import random
+
+number = random.randint(0, 101)
+
+while True:
+    answer = input('Guess the number: ')
+    if answer == "" or answer == "exit":
+        print("Exiting the program")
+        break
+    
+    if not answer.isdigit():
+        print("Enter correct number!")
+        continue
+    
+    answer = int(answer)
+    
+    if answer == number:
+        print('Absolutely correct!')
+        break
+    
+    elif answer < number:
+        print('The number is bigger')
+    else:
+        print('The number is smaller')
+```
+
+To run use this in terminal:
+```{bash, eval=FALSE}
+cd R
+python guessingGame.py
+```
+
+## Python working directory controls
+```{python, WDcontrols}
+import os
+#check current working directory
+cwd = os.getcwd()
+cwd
+
+#change working directory
+os.chdir(cwd)
+
+#showing file list in the directory
+os.listdir(cwd)
+```
+## Making environments
+
+```{bash}
+D:
+cd YandexDisk\GitHubCode\01_DiveIntoPython
+
+#making environment
+python -m venv myenv
+
+#activating environment
+myenv\Scripts\activate.bat
+
+```
+
+## Object structure
+
+Looking at object methods.
+
+```{python}
+num = 13
+num.__add__(2)
+
+print(dir(num))
+
+print()
+
+print(dir('string'))
+```
+Python is utilizing automatic trash collection with link counter `ob_refcnt`. When counter reaches 0 the object is deleted.
+
+Type of object `ob_type` allows to keep track of the object type dynamically.
+
+```{python}
+typedef struct _object {
+    _PyObject_HEAD_EXTRA
+    Py_ssize_t ob_refcnt;         // Счетчик ссылок
+    struct _typeobject *ob_type;  // Указатель на тип объекта
+} PyObject;
+```
+
+PyVarObject extends PyObject with ob_size. `ob_size` keeps the number of elements of the variable part of the object. So for a string that would be length.
+
+```{python}
+typedef struct {
+    PyObject ob_base;
+    Py_ssize_t ob_size;  // Кол-во элементов в переменной части
+} PyVarObject;
+```
+
+C level has 2 macroses corresponding to PyObject and PyVarObject. They are used to create new types in Python.
+
+```{python}
+#define PyObject_HEAD  PyObject ob_base;
+
+#define PyObject_VAR_HEAD  PyVarObject ob_base;
+```
+
+## Bitecode
+
+See W1.pdf for more details. Full list of operations:
+
+```{python}
+import opcode
+print(opcode.opmap)
+```
+

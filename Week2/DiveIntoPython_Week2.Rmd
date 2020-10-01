@@ -1,0 +1,22 @@
+---
+title: "Dive into Python Week 2"
+author: "darthaline"
+date: "28 Sept 2020"
+output:
+  html_notebook:
+    toc: true
+---
+
+# Week 2
+
+```{r}
+library(reticulate)
+#install_miniconda()
+```
+
+##
+
+```{python}
+
+```
+

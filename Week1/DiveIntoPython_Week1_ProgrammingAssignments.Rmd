@@ -1,0 +1,68 @@
+---
+title: "Dive into Python Week 1"
+author: "darthaline"
+date: "14 Aug 2020"
+output:
+  html_notebook:
+    toc: true
+---
+
+# Programming assignments
+
+## Sum of numbers in a string
+```{python}
+#libraries
+import sys
+
+#grabbing input
+#digit_string = sys.argv[1]
+digit_string = "160438521039"
+
+#making sum variable
+sum = 0
+
+#looping through the string
+for symbol in digit_string:
+    sum = sum + int(symbol)
+
+#standard output
+print(sum)
+```
+
+## Ladder
+```{python}
+#libraries
+import sys
+
+#grabbing input
+#digit_string = sys.argv[1]
+step_string = "3"
+step_number = int(step_string)
+
+#looping through the string
+for number in range(1, step_number+1):
+    print( ' '*(step_number - number) + '#'*number )
+```
+
+## Square roots
+```{python}
+#libraries
+import sys
+
+#inputs
+#a = int(sys.argv[1])
+#b = int(sys.argv[2])
+#c = int(sys.argv[3])
+a, b, c = 13, 236, -396
+
+#computing determinant
+D = b**2 - 4*a*c
+
+#computing roots
+x1 = ( -b + (D)**0.5 ) / (2*a)
+x2 = ( -b - (D)**0.5 ) / (2*a)
+
+# outputting roots
+print(int(x1))
+print(int(x2))
+```
