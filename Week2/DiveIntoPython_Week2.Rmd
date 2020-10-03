@@ -14,9 +14,235 @@ library(reticulate)
 #install_miniconda()
 ```
 
-##
+## Functions
+
+Basic function definition
 
 ```{python}
-
+def get_seconds():
+    """Documentation: Return current seconds"""
+    from datetime import datetime
+    return datetime.now().second #shows what value to return. without one by default would return None
+    
+get_seconds() # to call function
+get_seconds.__doc__ # to get function documentation
+get_seconds.__name__ #to get function name
 ```
+
+Function with parameters
+
+```{python}
+def split_tags(tag_string):
+    tag_list = []
+    for tag in tag_string.split(','):
+        tag_list.append(tag.strip())
+    
+    return tag_list
+
+
+split_tags('python, coursera, mooc') #without input parameters would give an error
+```
+
+Type annotation is possible in Python:
+
+```{python}
+def add(x: int, y: int) -> int:
+    return x + y
+
+
+print(add(10, 11))
+print(add('still ', 'works'))
+```
+However using other types won't cause an error, example with strings still works.
+
+There are two ways to pass value, through link or through direct value.
+
+This example passes the link to an object and thus `values` changes:
+
+```{python}
+def extender(source_list, extend_list):
+    source_list.extend(extend_list)
+    
+
+values = [1, 2, 3]
+extender(values, [4, 5, 6])
+
+print(values)
+```
+
+This example passes the values, because tuple types cannot be changed:
+
+```{python}
+def replacer(source_tuple, replace_with):
+    source_tuple = replace_with
+    
+
+user_info = ('Guido', '31/01')
+replacer(user_info, ('Larry', '27/09'))
+
+print(user_info)
+```
+
+Overall, it's best to avoid changing global variables within a function, because change is often not obvious, it's confusing to other programmers.
+
+It's possible to use named arguments when caling a function.
+
+```{python}
+def say(greeting, name):
+    print('{} {}!'.format(greeting, name))
+    
+
+say('Hello', 'Kitty')
+say(name='Kitty', greeting='Hello')
+```
+
+Each function has an area of visibility:
+
+```{python, echo=FALSE}
+result = 0
+
+def increment():
+    result += 1
+    return result
+
+print(increment())
+```
+
+Here we're getting an error because result is a global variable
+
+It's possible to use default arguments:
+
+```{python}
+def greeting(name='it\'s me...'):
+    print('Hello, {}'.format(name))
+    
+    
+greeting()
+```
+
+We should be careful with default values when they are changable: here calling `append_one()` two times in a row changes the default value:
+
+```{python}
+def append_one(iterable=[]):
+    iterable.append(1)
+    return iterable
+
+
+print(append_one([1]))
+print(append_one.__defaults__)
+print(append_one())
+print(append_one.__defaults__)
+print(append_one())
+print(append_one.__defaults__)
+```
+To avoid this we can set the default to `None`, which can be done in 2 ways:
+
+```{python}
+def function(iterable=None):
+    if iterable is None:
+        iterable = []
+    
+
+def function(iterable=None):
+    iterable = iterable or []
+```
+
+
+We can define a function which has a varied number of input parameters using *
+
+```{python}
+def printer(*args):
+    print(type(args))
+    
+    for argument in args:
+        print(argument)
+
+
+printer(1, 2, 3, 4, 5)
+
+name_list = ['John', 'Bill', 'Amy']
+printer(*name_list)
+```
+
+Similarly we can work with dictionaries
+
+```{python}
+def printer(**kwargs):
+    print(type(kwargs))
+    
+    for key, value in kwargs.items():
+        print('{}: {}'.format(key, value))
+        
+        
+printer(a=10, b=11)
+```
+Two stars during the function call would make the first argument to be `user_id`, and second `feedback`
+```{python}
+payload = {
+    'user_id': 117,
+    'feedback': {
+        'subject': 'Registration fields',
+        'message': 'There is no country for old men'
+    }
+}
+
+printer(**payload)
+```
+
+## Files
+
+```{python}
+f = open('filename.txt')
+
+text_modes = ['r', 'w', 'a', 'r+'] #read, write, add, read+write
+binary_modes = ['br', 'bw', 'ba', 'br+'] #corresponding byte
+
+f = open('filename.txt', 'w')
+
+f.write('The world is changed.\nI taste it in the water.\n')
+
+f.close()
+```
+When we read second time, we don't get anything because the read pointer is already at the end of the file.
+```{python}
+f = open('filename.txt', 'r+')
+f.read()
+f.tell()
+f.read()
+```
+To read the file again we need to use method `seek()` to get back to start of the file
+```{python}
+f.seek(0)
+f.tell()
+print(f.read())
+f.close()
+```
+
+Method `readline()` allows to read one string at a time:
+
+```{python}
+f = open('filename.txt', 'r+')
+f.readline()
+f.close()
+```
+
+Method `readlines()` returns a list of strings:
+
+```{python}
+f = open('filename.txt', 'r+')
+f.readlines()
+f.close()
+
+#f.read() # reading a file after closing would give an error
+```
+
+To avoid the opening/closing hassle one could use a context manager
+
+```{python}
+with open('filename') as f:
+    print(f.read())
+```
+
+## Functional programming
+
 
