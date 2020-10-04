@@ -456,3 +456,159 @@ list(zip(
 ))
 ```
 
+## Decorators
+
+Decorators are functions which accept a function and return a function. Simplest decorator just takes in a function and then returns it:
+
+```{python}
+def decorator(func):
+    return func
+
+@decorator
+def decorated():
+    print('Hello!')
+    
+decorated = decorator(decorated)
+
+print(decorated.__name__)
+```
+
+It's more interesting when the new function is a modified or an entirely different one:
+
+```{python}
+def decorator(func):
+    def new_func():
+        pass
+    return new_func
+
+@decorator
+def decorated():
+    print('Hello!')
+    
+decorated()
+
+print(decorated.__name__)
+```
+
+Video question:
+
+```{python, echo=FALSE}
+def stringify(func):
+  return str(func)
+
+
+@stringify
+def multiply(a, b):
+  return a * b
+  
+multiply(10, 2)
+```
+
+A decorator which writes the log of the function that was called:
+
+```{python}
+import functools
+
+def logger(func):
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        result = func(*args, **kwargs)
+        with open('log.txt', 'w') as f:
+            f.write(str(result))
+
+        return result    
+    return wrapped
+
+@logger
+def summator(num_list):
+    return sum(num_list)
+
+print('Summator: {}'.format(summator([1, 2, 3, 4])))
+
+print(summator.__name__)
+
+with open('log.txt', 'r') as f:
+    print(f.read())
+```
+functools wraps allows to keep the name of the function as `summator` rather than `wrapped` for internal consistency/debugging.
+
+Let's write a decorator to write a log into an identified file:
+
+```{python}
+def logger(filename):
+    def decorator(func):
+        def wrapped(*args, **kwargs):
+            result = func(*args, **kwargs)
+            with open(filename, 'w') as f:
+                f.write(str(result))
+            return result
+        return wrapped
+    return decorator
+
+@logger('new_log.txt')
+def summator(num_list):
+    return sum(num_list)
+
+# summator = logger('log.txt')(summator)
+
+summator([1, 2, 3, 4, 5, 6])
+
+with open('new_log.txt', 'r') as f:
+    print(f.read())
+```
+
+We can also chain decorators:
+
+```{python}
+def first_decorator(func):
+    def wrapped():
+        print('Inside first_decorator product')
+        return func()
+    return wrapped
+
+def second_decorator(func):
+    def wrapped():
+        print('Inside second_decorator product')
+        return func()
+    return wrapped
+    
+@first_decorator
+@second_decorator
+def decorated():
+    print('Finally called...')
+    
+# decorated = first_decorator(second_decorator(decorated))
+    
+decorated()
+```
+
+And another example on chaining decorators:
+
+```{python}
+def bold(func):
+    def wrapped():
+        return "<b>" + func() + "</b>"
+    return wrapped
+
+
+def italic(func):
+    def wrapped():
+        return "<i>" + func() + "</i>"
+    return wrapped
+
+
+@bold
+@italic
+def hello():
+    return "hello world"
+
+
+# hello = bold(italic(hello))
+
+
+print(hello())
+```
+
+## Generators
+
+
