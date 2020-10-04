@@ -245,4 +245,214 @@ with open('filename') as f:
 
 ## Functional programming
 
+Functions are objects, and we can pass functions to other functions, and call functions from those functions. Here we defined a function `caller()` which calls function `func` with parameters `param` which we passed. We use caller to call function printer:
+
+```{python}
+def caller(func, params):
+    return func(*params)
+
+
+def printer(name, origin):
+    print('I\'m {} of {}!'.format(name, origin))
+    
+    
+caller(printer, ['Moana', 'Motunui'])
+```
+
+It's also possible to define functions within other functions:
+
+```{python}
+def get_multiplier():
+    def inner(a, b):
+        return a * b
+    return inner
+    
+    
+multiplier = get_multiplier()
+multiplier(10, 11)
+
+print(multiplier.__name__)
+```
+Importantly the name of multiplier is inner, since that's the function which actually returns the value.
+
+Here we define multiplier function which would multiply the passed number by the number we passed it originally. This is called замыкание.
+
+```{python}
+def get_multiplier(number):
+    def inner(a):
+        return a * number
+    return inner
+
+multiplier_by_2 = get_multiplier(2)
+multiplier_by_2(10)
+```
+There are some helpful functions for the cases when we need to pass a function to other functions.
+
+Here function `map` applies function `squarify` over all values of `range(5)`.
+
+```{python}
+def squarify(a):
+    return a ** 2
+
+
+list(map(squarify, range(5)))
+```
+We're calling list around map, because by default it returns a map object, which is it's own internal thing, and we'd rather not deal with it.
+
+This code is equivalent to use of cycle `for`, but it's much simpler and cleaner with `map`:
+
+```{python}
+squared_list = []
+
+for number in range(5):
+    squared_list.append(squarify(number))
+    
+print(squared_list)
+```
+
+Another function which is used with other functions is `filter`, which filter the values in an iterable object based on a predictor:
+
+```{python}
+def is_positive(a):
+    return a > 0
+
+
+list(filter(is_positive, range(-2, 3)))
+```
+
+This code is equivalent to use of cycle `for`, but it's much simpler and cleaner with `filter`:
+
+```{python}
+positive_list = []
+
+for number in range(-2, 3):
+    if is_positive(number):
+        positive_list.append(number)
+        
+print(positive_list)
+```
+
+In cases where we don't need to reuse the function, we can use anonymous (or lambda) functions:
+
+```{python}
+list(map(lambda x: x ** 2, range(5)))
+
+type(lambda x: x ** 2)
+
+list(filter(lambda x: x > 0, range(-2, 3)))
+```
+
+### Function: list of numbers to list of strings
+
+```{python}
+def numbers_to_strings(number_list):
+    return list(map(str, number_list))
+    
+numbers_to_strings([1, 0, -5.6, 1000.1])
+```
+
+Pacage `functools` has several other useful functions. For example, function `reduce` which accepts the function and an iterable object, and it iterates over them, by applying the results of the previous iteration to the next value in the iterable object.
+
+
+```{python}
+from functools import reduce
+
+
+def multiply(a, b):
+    return a * b
+
+reduce(multiply, [1, 2, 3, 4, 5])
+```
+
+It's similarly possible to apply it to lambda functions:
+
+```{python}
+reduce(lambda x, y: x * y, range(1, 6))
+```
+
+Another useful function is `partial`, which takes a function and a parameter, and creates a new function with a default value equal to that parameter.
+
+```{python}
+from functools import partial
+
+
+def greeter(person, greeting):
+    return '{}, {}!'.format(greeting, person)
+
+
+hier = partial(greeter, greeting='Hi')
+helloer = partial(greeter, greeting='Hello')
+
+
+print(hier('brother'))
+print(helloer('sir'))
+```
+Previosly when working with lists we would do smth like this:
+
+```{python}
+square_list = []
+for number in range(10):
+    square_list.append(number ** 2)
+print(square_list)
+```
+
+There's a better way in Python to create list exressions - list comprehensions: 
+
+```{python}
+square_list = [number ** 2 for number in range(10)]
+print(square_list)
+```
+
+Similarly we can use list comprehensions with a condition. Previously:
+
+```{python}
+even_list = []
+for number in range(10):
+    if number % 2 == 0:
+        even_list.append(number)
+print(even_list)
+```
+
+And with list comprehensions:
+
+```{python}
+even_list = [num for num in range(10) if num % 2 == 0]
+print(even_list)
+```
+
+Similarly we can define dictionaries:
+
+```{python}
+square_map = {number: number ** 2 for number in range(5)}
+print(square_map)
+```
+
+and sets:
+
+```{python}
+reminders_set = {num % 10 for num in range(100)}
+print(reminders_set)
+```
+
+the expression we use to generate those has a type:
+
+```{python}
+print(type(number ** 2 for number in range(5)))
+```
+
+Finally, function `zip` is also commonly used and allows to stick together two iterable objects:
+
+```{python}
+num_list = range(7)
+squared_list = [x ** 2 for x in num_list]
+
+list(zip(num_list, squared_list))
+```
+
+```{python}
+list(zip(
+  filter(bool, range(3)),
+  [x for x in range(3) if x]
+))
+```
 
