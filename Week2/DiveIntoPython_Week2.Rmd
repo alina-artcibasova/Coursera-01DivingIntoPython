@@ -30,6 +30,8 @@ user_data = [
     ['Elena', 4.4],
     ['Andrey', 4.2]
 ]
+
+type(user_data)
 ```
 
 To get the length of the list we can use function `len`
@@ -170,7 +172,42 @@ print(reversed(numbers))
 print(list(reversed(numbers)))
 ```
 
+## Tuple (Кортеж)
 
+```{python}
+empty_tuple = ()
+empty_tuple = tuple()
+type(empty_tuple)
+```
+Tuples are immutable:
+
+```{python}
+immutables = (int, str, tuple)
+immutables[0] = float
+```
+
+But the elements inside them can be changed:
+
+```{python}
+blink = ([], [])
+blink[0].append(0)
+print(blink)
+```
+
+They can also be hashed
+
+```{python}
+hash(tuple())
+```
+
+Should be careful with single element tuples, since w/o a comma it's just interpreted as a type of the element
+
+```{python}
+one_element_tuple = (1,)
+guess_what = (1)
+
+type(guess_what)
+```
 
 
 ## Functions
