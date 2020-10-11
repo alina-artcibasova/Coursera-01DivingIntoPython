@@ -9,6 +9,19 @@ output:
 
 # Week 2
 
+## Python documentation
+
+* [data types](https://docs.python.org/3/library/stdtypes.html)
+* [using data structures](https://docs.python.org/3/tutorial/datastructures.html)
+* [hash table explaination](https://en.wikipedia.org/wiki/Hash_table)
+* [functions tutorial](https://docs.python.org/3/tutorial/controlflow.html#defining-functions)
+* [working with files](https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files)
+* [built in functions](https://docs.python.org/3/library/functions.html)
+* [sorting](https://docs.python.org/3/howto/sorting.html)
+* [functional programming](https://docs.python.org/3/howto/functional.html)
+* [functools module](https://docs.python.org/3/library/functools.html)
+* [decorators](http://python-3-patterns-idioms-test.readthedocs.io/en/latest/PythonDecorators.html)
+
 ```{r}
 library(reticulate)
 #install_miniconda()
@@ -239,6 +252,302 @@ print("Median value:", median)
 import statistics
 
 statistics.median(numbers)
+```
+
+## Dictionaries
+
+```{python}
+empty_dict = {}
+empty_dict = dict()
+
+collections_map = {
+    'mutable': ['list', 'set', 'dict'],
+    'immutable': ['tuple', 'frozenset']
+}
+```
+
+Dictionaries allow to get a value by the key in a constant time, thanks to hashing.
+
+```{python}
+print(collections_map['immutable'])
+```
+If the key doesn't exist, then it would return an error:
+
+```{python}
+print(collections_map['irresistible'])
+```
+
+Often it's convenient to request a key and return some standard value in case of it's absence:
+
+```{python}
+print(collections_map.get('irresistible', 'not found'))
+```
+
+To check that the key is present in the dictionary we can use operator `in`
+
+```{python}
+'mutable' in collections_map
+```
+
+dictionaries can be changed:
+
+```{python}
+beatles_map = {
+    'Paul': 'Bass',
+    'John': 'Guitar',
+    'George': 'Guitar',
+}
+print('Original:', beatles_map)
+
+#add
+beatles_map['Ringo'] = 'Drums'
+print('Added:', beatles_map)
+
+#delete
+del beatles_map['John']
+print('removed:', beatles_map)
+
+#update
+beatles_map.update({
+    'John': 'Guitar'
+})
+print('Updated:', beatles_map)
+```
+
+We can delete a key and return a value using method `pop`
+
+```{python}
+print(beatles_map.pop('Ringo'))
+print(beatles_map)
+```
+
+in case of a missing key we can use `setdefault`
+
+```{python}
+unknown_dict = {}
+print(unknown_dict.setdefault('key', 'default'))
+print(unknown_dict)
+print(unknown_dict.setdefault('key', 'new_default'))
+```
+
+We can iterate through dictionary keys:
+
+```{python}
+print(collections_map)
+
+for key in collections_map:
+    print(key)
+```
+
+or through values:
+
+```{python}
+for value in collections_map.values():
+    print(value)
+```
+
+or through key-value pairs:
+
+```{python}
+print(collections_map)
+
+for key, value in collections_map.items():
+    print('{} - {}'.format(key, value))
+```
+
+`OrderedDict` keeps added keys/values in the order they've been added, unlike normal dictionary:
+
+```{python}
+from collections import OrderedDict
+
+ordered = OrderedDict()
+
+for number in range(10):
+    ordered[number] = str(number)
+    
+for key in ordered:
+    print(key)
+```
+
+## Example with dictionaries
+
+```{python}
+import this
+```
+
+Let's determing which 3 words are the most common in python zen:
+
+```{python}
+zen = """Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!"""
+```
+
+Making a map:
+
+```{python}
+zen_map = dict()
+
+for word in zen.split():
+    cleaned_word = word.strip('.,!-*').lower()
+    if cleaned_word not in zen_map:
+        zen_map[cleaned_word] = 0
+        
+    zen_map[cleaned_word] += 1
+    
+print(zen_map)
+```
+
+Creating a tuple, sorting by amounts encountered, and outputting first 3
+
+```{python}
+import operator # allows to sort by value
+
+zen_items = zen_map.items()
+word_count_items = sorted(
+    zen_items, key=operator.itemgetter(1), reverse=True
+)
+
+print(word_count_items[:3])
+```
+
+Alternatively, we can use function `Counter` from module `Collections`
+
+```{python}
+from collections import Counter
+
+
+cleaned_list = []
+for word in zen.split():
+    cleaned_list.append(word.strip('.,-!').lower())
+    
+    
+print(Counter(cleaned_list).most_common(3))
+```
+
+## Sets
+
+Sets only keep unique entries:
+
+```{python}
+empty_set = set()
+number_set = {1, 2, 3, 3, 4, 5}
+
+print(number_set)
+type(number_set)
+```
+To check presense in a set
+
+```{python}
+print(2 in number_set)
+```
+
+To add element to a set:
+
+```{python}
+odd_set = set()
+even_set = set()
+
+for number in range(10):
+    if number % 2:
+        odd_set.add(number)
+    else:
+        even_set.add(number)
+        
+print(odd_set)
+print(even_set)
+```
+
+We can use logic operators with sets:
+
+```{python}
+union_set = odd_set | even_set
+print(union_set)
+
+union_set = odd_set.union(even_set)
+print(union_set)
+
+intersection_set = odd_set & even_set
+print(intersection_set)
+
+intersection_set = odd_set.intersection(even_set)
+print(intersection_set)
+```
+
+We can compute the difference between the sets (elements which are present in the first set but absent in the second):
+
+```{python}
+difference_set = odd_set - even_set
+print(difference_set)
+
+difference_set = odd_set.difference(even_set)
+print(difference_set)
+```
+
+Or symmetric difference (all elements which are mutually absent)
+
+```{python}
+symmetric_difference_set = odd_set ^ even_set
+print(symmetric_difference_set)
+
+symmetric_difference_set = odd_set.symmetric_difference(even_set)
+print(symmetric_difference_set)
+```
+
+To remove a specific element we can use `remove`, and any element we can use `pop`:
+
+```{python}
+even_set.remove(2)
+print(even_set)
+
+even_set.pop()
+print(even_set)
+```
+
+There is also frozen set data type which is immutable:
+
+```{python}
+frozen = frozenset(['Anna', 'Elsa', 'Kristoff'])
+
+frozen.add('Olaf')
+```
+
+## Example for sets
+
+Let's compute how many iterations it will take for a random number from 1 to 10 to repeat in a set:
+
+```{python}
+import random
+
+random_set = set()
+
+while True:
+    new_number = random.randint(1, 10)
+    if new_number in random_set:
+        break
+        
+    random_set.add(new_number)
+    
+
+print(len(random_set) + 1)
+print(random_set)
+
 ```
 
 
