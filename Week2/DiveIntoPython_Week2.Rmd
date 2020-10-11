@@ -636,7 +636,7 @@ say(name='Kitty', greeting='Hello')
 
 Each function has an area of visibility:
 
-```{python, echo=FALSE}
+```{python}
 result = 0
 
 def increment():
@@ -664,7 +664,6 @@ We should be careful with default values when they are changable: here calling `
 def append_one(iterable=[]):
     iterable.append(1)
     return iterable
-
 
 print(append_one([1]))
 print(append_one.__defaults__)
