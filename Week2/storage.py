@@ -27,11 +27,12 @@ import json # to store json files
 import os #
 import tempfile # file creation
 
-parser = argparse.ArgumentParser(description='Storing key-value pairs.')
+parser = argparse.ArgumentParser(description='Program stores inputed key-value pairs in a file, or retrieves values for an inputed key.')
 parser.add_argument('--key',
-                    help='an integer for the accumulator')
+                    help='the key for the storage entry')
 parser.add_argument('--val',
-                    help='sum the integers (default: find the max)')
-
+                    help='the value of a storage entry')
 args = parser.parse_args()
-print(args)
+
+
+print(args.key, args.val)
