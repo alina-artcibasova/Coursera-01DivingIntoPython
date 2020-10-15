@@ -34,5 +34,18 @@ parser.add_argument('--val',
                     help='the value of a storage entry')
 args = parser.parse_args()
 
+#creating storage file path
+storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
 
-print(args.key, args.val)
+# if key and value are supplied, we write them into file and print out nothing
+if args.key and args.val:
+    print('key and val condition')
+    with open(storage_path, 'a') as f:
+        f.write(json.dumps({args.key: args.val}, sort_keys=True, indent=4))
+        print('written into file')
+    
+# if only key is supplied, we read the keys from a file and print out values corresponding to the key
+if args.key and not args.val:
+    print("key condition")
+    with open(storage_path, 'r') as f:
+        print(json.loads(f.read()))
