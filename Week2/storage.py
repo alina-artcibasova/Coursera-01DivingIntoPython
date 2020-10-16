@@ -86,7 +86,6 @@ if args.key and args.val:
     with open(storage_path, 'w') as f:
         json.dump(saved_data, f, indent=4)
 
-
 #############################
 ## READING THE STORAGE
 #############################

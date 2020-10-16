@@ -1,0 +1,95 @@
+---
+title: "Week2: JSON decorator"
+author: "darthaline"
+date: "16 Oct 2020"
+---
+
+# Week2: JSON decorator
+
+```{r}
+library(reticulate)
+#install_miniconda()
+```
+
+[The assignment](https://www.coursera.org/learn/diving-in-python/programming/0664k/diekorator-to-json):
+
+Write a decorator to_json which can be applied to various function to turn their output into JSON-format.
+Remember to preserve the correct name of the decorated function.
+
+## Usage example
+
+```{python usage_example, eval=FALSE}
+@to_json
+def get_data():
+  return {
+    'data': 42
+  }
+  
+get_data()
+```
+
+This should return:
+
+```{python, eval=FALSE}
+'{"data": 42}'
+```
+
+## Code
+
+```{python}
+# LIBRARIES
+import json # to store json files
+import functools # to preserve the name of the original function when decorating
+
+# DECORATOR
+def to_json(func):
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        result = func(*args, **kwargs) # calling the original function, saving it's output into result
+        return json.dumps(result) # turning that output into json
+    return wrapped
+
+```
+
+## Tests
+
+```{python test1}
+@to_json
+def get_data():
+  return {
+    'data': 42
+  }
+  
+get_data()
+
+print(get_data.__name__) # checking that the name of the function is the same
+```
+
+```{python test1}
+@to_json
+def get_data2():
+  return [1,1,2,3,5,8]
+  
+get_data2()
+
+print(get_data2.__name__) # checking that the name of the function is the same
+```
+```{python test3}
+@to_json
+def get_data3():
+  return (int, str, tuple)
+  
+get_data3()
+
+print(get_data3.__name__) # checking that the name of the function is the same
+```
+
+```{python test4}
+@to_json
+def get_data4():
+  return {1, 2, 3, 3, 4, 5}
+  
+get_data4()
+
+print(get_data4.__name__) # checking that the name of the function is the same
+```
