@@ -1,0 +1,177 @@
+---
+title: "Dive into Python Week 3"
+author: "darthaline"
+date: "28 Sept 2020"
+output:
+  html_notebook:
+    toc: true
+---
+
+# Week 3
+```{r}
+library(reticulate)
+```
+
+## Classes
+
+Data types we've learned about previously are classes in python.
+
+We can use `type` to check the class of an object:
+
+```{python}
+num = 13.0
+print(type(num))
+```
+
+Function `isinstance` allows to check if the object belongs to a certain class:
+
+```{python}
+num = 13
+isinstance(num, int)
+
+numbers = {}
+isinstance(numbers, dict)
+```
+
+We can define class as follows:
+
+```{python}
+class Human:
+    pass #does nothing
+#or
+class Robot:
+    """This class allows to make robots""" #documentation
+
+print(Robot)
+
+print(dir(Robot))
+```
+
+Even newly created classes have quite a few pre-defined methods.
+
+Let's create a class `Planet`, and an object of this class `planet`
+
+```{python}
+class Planet:
+    pass
+    
+planet = Planet()
+print(planet)
+```
+
+We can create a list of `Planet` class objectS:
+
+```{python}
+solar_system = []
+for i in range(8):
+    planet = Planet()
+    solar_system.append(planet)
+
+print(solar_system) 
+```
+
+Class instances are hashable, so we can use them as keys in a dictionary:
+
+```{python}
+solar_system = {}
+for i in range(8):
+    planet = Planet()
+    solar_system[planet] = True
+
+print(solar_system)
+```
+
+The way we've defined the objects in the list means that none of the planets have their own names/specific properties. We can redefine those using method `__init__`:
+
+```{python}
+class Planet:
+    def __init__(self, name):
+        self.name = name
+
+earth = Planet("Earth")
+print(earth.name)
+print(earth)
+
+```
+
+To make `print` of the class object more meaningful we can redefine method `__str__`
+
+```{python}
+class Planet:
+    def __init__(self, name):
+        self.name = name
+    def __str__(self):
+        return self.name
+
+
+earth = Planet("Earth")
+print(earth)
+```
+
+So now we can apply that to a list:
+
+```{python}
+solar_system = []
+
+planet_names = [
+    "Mercury", "Venus", "Earth", "Mars", 
+    "Jupiter", "Saturn", "Uranus", "Neptune"
+]
+
+for name in planet_names:
+    planet = Planet(name)
+    solar_system.append(planet)
+
+print(solar_system)
+```
+
+Unfortunately defining them in a list invokes another method __repr__. To fix this we can do the following:
+
+```{python}
+class Planet:
+    
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return f"Planet {self.name}"
+        
+solar_system = []
+
+planet_names = [
+    "Mercury", "Venus", "Earth", "Mars", 
+    "Jupiter", "Saturn", "Uranus", "Neptune"
+]
+
+for name in planet_names:
+    planet = Planet(name)
+    solar_system.append(planet)
+
+print(solar_system)
+```
+
+We can also modify the attributes of a class:
+
+```{python}
+mars = Planet("Mars")
+print(mars)
+
+mars.name
+
+mars.name = "Second Earth?"
+mars.name
+```
+
+If the attribute doesn't exist, we'll get an error:
+```{python}
+mars.mass
+```
+
+Similar thing would happen if we delete the attribute and then refer to it:
+
+```{python}
+del mars.name
+
+mars.name
+```
+
