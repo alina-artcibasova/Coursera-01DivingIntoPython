@@ -175,3 +175,33 @@ del mars.name
 mars.name
 ```
 
+We can define class attributes, which are variables belonging to the class itself, rather than to its objects:
+
+```{python}
+class Planet:
+    count = 0
+    def __init__(self, name, population=None):
+        self.name = name
+        self.population = population or []
+        Planet.count += 1
+earth = Planet("Earth")
+mars = Planet("Mars")
+
+print(Planet.count)
+mars.count
+```
+
+Method __del__ is a destructor of the class, and we can redefine it, however it's best to avoid it, and use other methods.
+
+```{python}
+class Human:
+
+    def __del__(self):
+        print("Goodbye!")
+
+human = Human()
+del human
+```
+
+
+
