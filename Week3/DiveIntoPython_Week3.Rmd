@@ -23,6 +23,8 @@ num = 13.0
 print(type(num))
 ```
 
+### `isinstance` function
+
 Function `isinstance` allows to check if the object belongs to a certain class:
 
 ```{python}
@@ -150,6 +152,8 @@ for name in planet_names:
 print(solar_system)
 ```
 
+### Class attributes
+
 We can also modify the attributes of a class:
 
 ```{python}
@@ -191,6 +195,8 @@ print(Planet.count)
 mars.count
 ```
 
+### Class destructor
+
 Method __del__ is a destructor of the class, and we can redefine it, however it's best to avoid it, and use other methods.
 
 ```{python}
@@ -203,5 +209,65 @@ human = Human()
 del human
 ```
 
+### Class dictionary
 
+We can call a dictionary of a class by using method `__dict__` on the object:
+
+```{python}
+class Planet:
+    """This class describes planets"""
+    
+    count = 1
+    
+    def __init__(self, name, population=None):
+        self.name = name
+        self.population = population or []
+
+
+planet = Planet("Earth")
+planet.__dict__
+
+planet.mass = 5.97e24
+planet.__dict__
+```
+
+Similarly we can get a dict of the class itself.
+
+```{python}
+Planet.__dict__
+```
+
+We can call class documentation either through the object or a class itself:
+
+```{python}
+Planet.__doc__
+planet.__doc__
+```
+
+To get the class from the object we can use method `__class__`
+
+```{python}
+planet.__class__
+```
+
+### Class constructor
+
+Method `__new__` is a constructor of the class object. Here we redefine `__new__` and `__init__` to give us messages indicating when they are called:
+
+```{python}
+class Planet:
+
+    def __new__(cls, *args, **kwargs):
+        print("__new__ called")
+        obj = super().__new__(cls)
+        return obj
+
+    def __init__(self, name):
+        print("__init__ called")
+        self.name = name
+        
+earth = Planet("Earth")
+```
+
+When we called Planet("Earth"), it called function new, which checked that the object being created is of the right type, and then called `__init__`
 
